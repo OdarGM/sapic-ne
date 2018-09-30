@@ -9,7 +9,7 @@ import init from './init'
 Vue.use(Vuex)
 
 let state = {
-  background: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/items/212200/72140546ab66eba298c1959b9fd4324cf4c0635f.jpg',
+  background: null,
   bgInfo: [],
   backgrounds: [],
   nextRandomBackgrounds: [],
@@ -42,6 +42,9 @@ const createStore = () => {
     mutations: {
       setBackground (state, background) {
         state.background = background
+      },
+      setBackgroundURL (state, value) {
+        state.background = value
       },
       setBackgrounds (state, backgrounds) {
         state.backgrounds = backgrounds
@@ -89,8 +92,13 @@ const createStore = () => {
         state.bgSize = value
       },
       setState (state, newState) {
-        console.log('settings stte', state, newState)
         state = newState
+      },
+      setAvatar (state, avatar) {
+        state.user = {
+          ...state.user,
+          avatar: avatar
+        }
       }
     },
     actions: {
@@ -106,6 +114,9 @@ const createStore = () => {
 
         let url = 'https://steam.design/raw/' + btoa(JSON.stringify(bgSaveInfo))
         shell.openExternal(url)
+      },
+      openDiscord () {
+        shell.openExternal('https://discord.gg/jnqnHuX')
       },
       randomBackground ({ commit }) {
         commit('randomBackground')

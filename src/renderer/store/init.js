@@ -5,11 +5,14 @@ import Jimp from 'jimp'
 export default store => {
   let state = JSON.parse(JSON.stringify(store.state))
   const { commit } = store
+  const { dispatch } = store
 
   if (!state.backgrounds || state.backgrounds.length < 10) {
     const bgs = require('@/assets/bg.json')
     commit('setBackgrounds', bgs)
   }
+
+  dispatch('randomBackground')
 
   const curWindow = remote.getCurrentWindow()
   commit('setCurrentWindow', curWindow)
@@ -24,16 +27,15 @@ export default store => {
   }, 100, false))
 
   try {
+    process.activateUvLoop()
     greenworks.init()
     store.commit('setGreenworks', greenworks)
 
     let user = greenworks.getSteamId()
-    console.log('gw', user)
 
     store.commit('setUser', user)
 
     greenworks.on('avatar-image-loaded', async (steamid, handler) => {
-      console.log('Avatar image loaded triggered', handler)
       if (handler < 1) return
       let avatarBuffer = await imageFromHandler(handler)
 
@@ -46,13 +48,12 @@ export default store => {
 
     if (handler > 0) {
       imageFromHandler(handler).then((avatarBuffer) => {
-        let user = store.state.user
-        user.avatar = avatarBuffer
-        store.commit('setUser', user)
+        store.commit('setAvatar', avatarBuffer)
       })
     }
   } catch (e) {
     console.log('Can\'t init greenworks')
+    store.commit('setUser', 0)
   }
 }
 

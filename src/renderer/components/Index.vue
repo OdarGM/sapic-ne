@@ -32,9 +32,9 @@ export default {
     TitleBar,
     MenuWindow
   },
-  async asyncData ({ store }) {
+  data () {
     return {
-      animatedScale: store.state.previewScale
+      animatedScale: this.$store.state.previewScale
     }
   },
   computed: {
@@ -75,7 +75,7 @@ export default {
   height calc(100% - 30px)
   display flex
   flex-direction row
-  background-color black
+  background-color #12151A
 }
 
 .preview__window {
@@ -83,6 +83,8 @@ export default {
   flex 1 1 auto
   overflow-y scroll
   overflow-x hidden
+  border-top-left-radius 20px
+  background black
 }
 
 .zoom_out
@@ -134,6 +136,7 @@ html, body {
 
 body {
   margin: 0;
+  font-family: "Product Sans";
 }
 
 
@@ -154,20 +157,18 @@ body {
   height: 0px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e1e1e1;
-  border: 0px none #ffffff;
-  border-radius: 50px;
+  background: #12151A;
+  transition: background-color 0.25s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff;
+  transition: background-color 0.25s ease;
+  background-color: #1c2129;
 }
 ::-webkit-scrollbar-thumb:active {
-  background: #000000;
+  background: #272d38;
 }
 ::-webkit-scrollbar-track {
   background: #666666;
-  border: 0px none #ffffff;
-  border-radius: 50px;
 }
 ::-webkit-scrollbar-track:hover {
   background: #666666;
